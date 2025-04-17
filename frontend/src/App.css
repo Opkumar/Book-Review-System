@@ -1,0 +1,62 @@
+/* Global Styles */
+:root {
+  --primary-color: #007bff;
+  --dark-color: #343a40;
+  --light-color: #f4f4f4;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* Book Card Styles */
+.book-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.book-cover {
+  position: relative;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Star Rating Styles */
+.star-rating {
+  display: flex;
+  align-items: center;
+}
+
+/* Review Card Styles */
+.review-list .card {
+  margin-bottom: 1.5rem;
+}
+
+/* Profile Page Styles */
+.profile-page .nav-tabs .nav-link {
+  cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
