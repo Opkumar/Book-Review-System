@@ -8,7 +8,7 @@ const app = express()
 
 // Enable CORS (allow frontend on port 5173)
 app.use(cors({
-  origin: "http://localhost:5173", // Replace with your frontend URL
+  origin: "https://book-review-system-two.vercel.app", // Replace with your frontend URL
   methods: ["GET", "POST", "PUT", "DELETE"], // Add the methods you need
   credentials: true // Allow cookies to be sent if required
 }))
