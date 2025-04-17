@@ -64,7 +64,5 @@ A full-stack web application where users can explore, review, and rate books. Ad
 - MongoDB
 - npm 
 
-### 🔧 Clone the repo
-```bash
-git clone https://github.com/yourusername/book-review-platform.git
-cd book-review-platform
+### 🔗 Website Link
+Visit the live application: [Book Review Platform](https://book-review-system-two.vercel.app)
