@@ -16,7 +16,7 @@ const Register = () => {
     password2: "",
   })
 
-  const { name, email, password, password2 } = formData
+  const { name, email, password, password2 } = formData;
   const [loading, setLoading] = useState(false)
   const [formError, setFormError] = useState("")
 
