@@ -24,10 +24,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  
   booksRead: {
     type: Number,
     default: 0,
   },
+
   createdAt: {
     type: Date,
     default: Date.now,

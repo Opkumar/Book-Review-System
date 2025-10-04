@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://book-review-system-cc20.onrender.com",
+    // baseURL: "https://book-review-system-cc20.onrender.com",
+    baseURL: `${import.meta.env.VITE_BACKEND_URL}`,
     withCredentials:true,
 })
 

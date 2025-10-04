@@ -6,11 +6,12 @@ require("dotenv").config()
 
 const app = express()
 
-// Enable CORS (allow frontend on port 5173)
+
 app.use(cors({
-  origin: "https://book-review-system-two.vercel.app", // Replace with your frontend URL
-  methods: ["GET", "POST", "PUT", "DELETE"], // Add the methods you need
-  credentials: true // Allow cookies to be sent if required
+  origin: `${process.env.FRONTEND_URL}`, 
+  // origin: "https://book-review-system-two.vercel.app", 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true 
 }))
 
 // Connect Database

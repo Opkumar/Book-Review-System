@@ -77,7 +77,7 @@ export const BookProvider = ({ children }) => {
     }
   }
 
-  // Add new book (admin only)
+  // Add new book 
   const addBook = async (formData) => {
     const config = {
       headers: {
