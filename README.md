@@ -32,13 +32,15 @@ A full-stack web application where users can explore, review, and rate books. Ad
   - All reviews for each book  
   - **Average rating** on the book details page  
 
+###  3. Light/Dark mode
+
 ---
 
 ## 🛠️ Tech Stack
 
 | Layer       | Technology        |
 |-------------|-------------------|
-| Frontend    | React, Axios, React Bootstrap / Tailwind CSS |
+| Frontend    | React, Axios, React Bootstrap  |
 | Backend     | Node.js, Express  |
 | Database    | MongoDB with Mongoose |
 | Auth        | JSON Web Token (JWT) |
