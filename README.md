@@ -32,7 +32,9 @@ A full-stack web application where users can explore, review, and rate books. Ad
   - All reviews for each book  
   - **Average rating** on the book details page  
 
-###  3. Light/Dark mode
+### 4. Light/Dark Mode
+- Users can toggle between **Light 🌞 / Dark 🌙 modes** using an icon button in the UI
+- Theme preference is saved for each session
 
 ---
 
@@ -82,6 +84,33 @@ A full-stack web application where users can explore, review, and rate books. Ad
 - Node.js
 - MongoDB
 - npm 
+
+2. Clone the repository:
+
+    ```bash
+    git clone https://github.com/your-username/book-review-platform.git
+    cd book-review-platform
+    ```
+
+3. Set up environment variables:
+
+    - Create a `.env` file in the backend folder with your MongoDB URI, JWT secret, etc.
+
+4. Deploy Backend on Render:
+
+    - Push your backend code to GitHub.
+    - Go to [Render](https://render.com), create a new Web Service, and connect your GitHub repo.
+    - Set environment variables in Render dashboard.
+    - Render will build and deploy your backend. Note the API URL.
+
+5. Deploy Frontend on Vercel:
+
+    - Push your frontend code to GitHub.
+    - Go to [Vercel](https://vercel.com), import your repo, and deploy.
+    - In Vercel dashboard, set the backend API URL as an environment variable (e.g., `REACT_APP_API_URL`).
+    - Vercel will build and deploy your frontend.
+
+6. Start using the platform!
 
 ### 🔗 Website Link
 Visit the live application: [Book Review Platform](https://book-review-system-two.vercel.app)
