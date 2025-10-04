@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import BookContext from "../../context/BookContext";
 import ReviewContext from "../../context/ReviewContext";
 import AuthContext from "../../context/AuthContext";
@@ -13,52 +13,59 @@ import Alert from "../layout/Alert";
 import { useReadingList } from "../../context/ReadingListContext";
 
 const BookDetails = () => {
-  const { id } = useParams()
-  const bookContext = useContext(BookContext)
-  const reviewContext = useContext(ReviewContext)
-  const authContext = useContext(AuthContext)
+  const { id } = useParams();
+  const bookContext = useContext(BookContext);
+  const reviewContext = useContext(ReviewContext);
+  const authContext = useContext(AuthContext);
   const { addReadingListEntry } = useReadingList();
+  const navigate = useNavigate();
 
-  const { book, loading: bookLoading, error: bookError, getBook } = bookContext
-  const { reviews, loading: reviewLoading, getBookReviews } = reviewContext
-  const { isAuthenticated, user } = authContext
+  const { book, loading: bookLoading, error: bookError, getBook } = bookContext;
+  const { reviews, loading: reviewLoading, getBookReviews } = reviewContext;
+  const { isAuthenticated, user } = authContext;
 
-  const [activeTab, setActiveTab] = useState("description")
-  const [adding, setAdding] = useState(false)
-  const [alert, setAlert] = useState(null)
+  const [activeTab, setActiveTab] = useState("description");
+  const [adding, setAdding] = useState(false);
+  const [alert, setAlert] = useState(null);
 
   useEffect(() => {
-    getBook(id)
-    getBookReviews(id)
+    getBook(id);
+    getBookReviews(id);
     // eslint-disable-next-line
-  }, [id])
+  }, [id]);
 
   const handleAddToReadingList = async () => {
     if (!isAuthenticated) {
-      setAlert({ type: "danger", message: "You must be logged in to add to reading list." })
-      return
+      setAlert({
+        type: "danger",
+        message: "You must be logged in to add to reading list.",
+      });
+      return;
     }
     try {
-      setAdding(true)
-      await addReadingListEntry(user._id, book._id)
-      setAlert({ type: "success", message: "Book added to your reading list!" })
+      setAdding(true);
+      await addReadingListEntry(user._id, book._id);
+      setAlert({
+        type: "success",
+        message: "Book added to your reading list!",
+      });
     } catch (err) {
-      setAlert({ type: "danger", message: err.error || "Failed to add book." })
+      setAlert({ type: "danger", message: err.error || "Failed to add book." });
     } finally {
-      setAdding(false)
+      setAdding(false);
     }
-  }
+  };
 
   if (bookLoading || reviewLoading) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   if (bookError) {
-    return <Alert type="danger" message={bookError} />
+    return <Alert type="danger" message={bookError} />;
   }
 
   if (!book) {
-    return <Alert type="danger" message="Book not found" />
+    return <Alert type="danger" message="Book not found" />;
   }
 
   return (
@@ -99,7 +106,7 @@ const BookDetails = () => {
               </button>
               {isAuthenticated ? (
                 <button
-                  className="btn btn-outline-primary w-100"
+                  className="btn btn-outline-primary w-100 mb-2"
                   onClick={() =>
                     document
                       .getElementById("write-review")
@@ -111,10 +118,18 @@ const BookDetails = () => {
               ) : (
                 <Link
                   to={`/login?redirect=/books/${book._id}`}
-                  className="btn btn-outline-primary w-100"
+                  className="btn btn-outline-primary w-100 mb-2"
                 >
                   Sign in to Review
                 </Link>
+              )}
+              {isAuthenticated && user && book.createdBy === user._id && (
+                <button
+                  className="btn btn-outline-primary w-100"
+                  onClick={() => navigate(`/books/edit/${book._id}`)}
+                >
+                  Edit Book
+                </button>
               )}
             </div>
           </div>
@@ -208,7 +223,7 @@ const BookDetails = () => {
             <ReviewList reviews={reviews} />
           </div>
 
-          {isAuthenticated && (
+          {isAuthenticated && !reviews.some((r) => r.user._id === user._id) && (
             <div id="write-review" className="write-review mt-5">
               <h2 className="h4 mb-3">Write a Review</h2>
               <ReviewForm bookId={book._id} />

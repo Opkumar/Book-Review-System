@@ -1,42 +1,42 @@
-"use client"
+"use client";
 
-import { useContext, useState } from "react"
-import { Link } from "react-router-dom"
-import PropTypes from "prop-types"
-import ReviewContext from "../../context/ReviewContext"
-import AuthContext from "../../context/AuthContext"
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import ReviewContext from "../../context/ReviewContext";
+import AuthContext from "../../context/AuthContext";
+import EditReview from "./EditReview";
 
 const ReviewCard = ({ review, showBook = false }) => {
-  const reviewContext = useContext(ReviewContext)
-  const authContext = useContext(AuthContext)
-  const { markReviewHelpful } = reviewContext
-  const { isAuthenticated } = authContext
+  const reviewContext = useContext(ReviewContext);
+  const authContext = useContext(AuthContext);
+  const { markReviewHelpful } = reviewContext;
+  const { isAuthenticated, user } = authContext;
 
-  const [isMarking, setIsMarking] = useState(false)
-  const [isMarked, setIsMarked] = useState(false)
+  const [isMarking, setIsMarking] = useState(false);
+  const [isMarked, setIsMarked] = useState(false);
+  const [isEditReview, setIsEditReview] = useState(false);
 
   const handleMarkHelpful = async () => {
-    if (!isAuthenticated) {
-      // Redirect to login or show a message
-      return
-    }
+    if (!isAuthenticated) return;
+    if (isMarked || isMarking) return;
 
-    if (isMarked || isMarking) return
-
-    setIsMarking(true)
+    setIsMarking(true);
     try {
-      await markReviewHelpful(review._id)
-      setIsMarked(true)
+      await markReviewHelpful(review._id);
+      setIsMarked(true);
     } catch (err) {
-      console.error("Error marking review as helpful:", err)
+      console.error("Error marking review as helpful:", err);
     } finally {
-      setIsMarking(false)
+      setIsMarking(false);
     }
-  }
+  };
 
-  return (
+  return isEditReview ? (
+    <EditReview review={review} onCancel={() => setIsEditReview(false)} />
+  ) : (
     <div className="card mb-3">
-      <div className="card-header d-flex align-items-center">
+      <div className="card-header d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center">
           {review.user.avatar ? (
             <img
@@ -55,7 +55,10 @@ const ReviewCard = ({ review, showBook = false }) => {
             </div>
           )}
           <div>
-            <Link to={`/profile/${review.user._id}`} className="fw-bold text-decoration-none">
+            <Link
+              to={`/profile/${review.user._id}`}
+              className="fw-bold text-decoration-none"
+            >
               {review.user.name}
             </Link>
             <div className="d-flex align-items-center">
@@ -68,22 +71,39 @@ const ReviewCard = ({ review, showBook = false }) => {
                   ></i>
                 ))}
               </div>
-              <small className="text-muted">{new Date(review.createdAt).toLocaleDateString()}</small>
+              <small className="text-muted">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </small>
             </div>
           </div>
         </div>
+
+        {/* Show Edit button only for the review owner */}
+        {isAuthenticated && user._id === review.user._id && (
+          <button
+            className="btn btn-sm btn-outline-primary"
+            onClick={() => setIsEditReview(true)}
+          >
+            Edit Review
+          </button>
+        )}
       </div>
+
       <div className="card-body">
         {showBook && (
-          <Link to={`/books/${review.book._id}`} className="d-block mb-2 text-decoration-none">
+          <Link
+            to={`/books/${review.book?._id}`}
+            className="d-block mb-2 text-decoration-none"
+          >
             <small className="text-muted">
-              Review for <span className="fw-bold">{review.book.title}</span>
+              Review for <span className="fw-bold">{review.book?.title}</span>
             </small>
           </Link>
         )}
         {review.title && <h5 className="card-title">{review.title}</h5>}
         <p className="card-text">{review.content}</p>
       </div>
+
       <div className="card-footer d-flex justify-content-between align-items-center">
         <small className="text-muted">
           <i className="fas fa-thumbs-up me-1"></i>
@@ -104,12 +124,12 @@ const ReviewCard = ({ review, showBook = false }) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 ReviewCard.propTypes = {
   review: PropTypes.object.isRequired,
   showBook: PropTypes.bool,
-}
+};
 
-export default ReviewCard
+export default ReviewCard;

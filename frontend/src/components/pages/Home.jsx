@@ -10,7 +10,7 @@ import Spinner from "../layout/Spinner";
 const Home = () => {
   const bookContext = useContext(BookContext);
   const { featuredBooks, loading, getFeaturedBooks } = bookContext;
-  const { user } = authContext;
+  const { user } = useContext(authContext);
 
   useEffect(() => {
     getFeaturedBooks();
@@ -36,6 +36,7 @@ const Home = () => {
     transition:
       "background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
   };
+  console.log(user)
 
   return (
     <div className="home-page" style={{ color: "var(--text-color)" }}>

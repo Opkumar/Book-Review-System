@@ -151,7 +151,7 @@ router.post(
 
     try {
       // Check if user is admin
-      const user = await User.findById(req.user.id)
+      // const user = await User.findById(req.user.id)
       // if (user.role !== "admin") {
       //   return res.status(401).json({ msg: "Not authorized" })
       // }
@@ -189,6 +189,7 @@ router.post(
         pageCount,
         coverImage,
         featured: featured || false,
+        createdBy:req.user.id,
       })
 
       const book = await newBook.save()
@@ -205,11 +206,7 @@ router.post(
 // @access  Private (Admin only)
 router.put("/:id", auth, async (req, res) => {
   try {
-    // Check if user is admin
-    const user = await User.findById(req.user.id)
-    if (user.role !== "admin") {
-      return res.status(401).json({ msg: "Not authorized" })
-    }
+    
 
     let book = await Book.findById(req.params.id)
 

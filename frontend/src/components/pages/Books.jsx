@@ -11,6 +11,7 @@ import Alert from "../layout/Alert"
 const Books = () => {
   const bookContext = useContext(BookContext)
   const { books, loading, error, totalPages, currentPage, getBooks } = bookContext
+ 
 
   const [searchParams, setSearchParams] = useState({
     search: "",
@@ -29,6 +30,9 @@ const Books = () => {
     )
     // eslint-disable-next-line
   }, [searchParams])
+
+ 
+
 
   const handleSearch = (search) => setSearchParams({ ...searchParams, search, page: 1 })
   const handleFilterChange = (genre) => setSearchParams({ ...searchParams, genre, page: 1 })
@@ -92,7 +96,7 @@ const Books = () => {
             <div className="row">
               {books.map((book) => (
                 <div key={book._id} className="col-sm-6 col-lg-4 mb-4">
-                  <BookCard book={book} cardStyle={cardStyle} />
+                  <BookCard book={book} cardStyle={cardStyle}   />
                 </div>
               ))}
             </div>

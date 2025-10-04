@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { createContext, useReducer } from "react"
-import axiosInstance from "../lib/axios"
-import bookReducer from "../reducers/bookReducer"
+import { createContext, useReducer } from "react";
+import axiosInstance from "../lib/axios";
+import bookReducer from "../reducers/bookReducer";
 
-const BookContext = createContext()
+const BookContext = createContext();
 
 export const BookProvider = ({ children }) => {
   const initialState = {
@@ -16,145 +16,163 @@ export const BookProvider = ({ children }) => {
     totalBooks: 0,
     totalPages: 0,
     currentPage: 1,
-  }
+  };
 
-  const [state, dispatch] = useReducer(bookReducer, initialState)
+  const [state, dispatch] = useReducer(bookReducer, initialState);
 
   // Get all books with pagination, search, and filter
-  const getBooks = async (page = 1, limit = 12, search = "", genre = "", sort = "newest") => {
+  const getBooks = async (
+    page = 1,
+    limit = 12,
+    search = "",
+    genre = "",
+    sort = "newest"
+  ) => {
     try {
-      dispatch({ type: "SET_LOADING" })
+      dispatch({ type: "SET_LOADING" });
 
-      const res = await axiosInstance.get(`/api/books?page=${page}&limit=${limit}&search=${search}&genre=${genre}&sort=${sort}`)
+      const res = await axiosInstance.get(
+        `/api/books?page=${page}&limit=${limit}&search=${search}&genre=${genre}&sort=${sort}`
+      );
 
       dispatch({
         type: "GET_BOOKS",
         payload: res.data,
-      })
+      });
     } catch (err) {
       dispatch({
         type: "BOOK_ERROR",
         payload: err.response.data.msg,
-      })
+      });
     }
-  }
+  };
 
   // Get featured books
   const getFeaturedBooks = async () => {
     try {
-      dispatch({ type: "SET_LOADING" })
+      dispatch({ type: "SET_LOADING" });
 
-      const res = await axiosInstance.get("/api/books/featured")
+      const res = await axiosInstance.get("/api/books/featured");
 
       dispatch({
         type: "GET_FEATURED_BOOKS",
         payload: res.data,
-      })
+      });
     } catch (err) {
       dispatch({
         type: "BOOK_ERROR",
         payload: err.response.data.msg,
-      })
+      });
     }
-  }
+  };
 
   // Get book by ID
   const getBook = async (id) => {
     try {
-      dispatch({ type: "SET_LOADING" })
+      dispatch({ type: "SET_LOADING" });
 
-      const res = await axiosInstance.get(`/api/books/${id}`)
+      const res = await axiosInstance.get(`/api/books/${id}`);
 
       dispatch({
         type: "GET_BOOK",
         payload: res.data,
-      })
+      });
     } catch (err) {
       dispatch({
         type: "BOOK_ERROR",
         payload: err.response.data.msg,
-      })
+      });
     }
-  }
+  };
 
-  // Add new book 
+  // Add new book
   const addBook = async (formData) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    };
 
     try {
-      const res = await axiosInstance.post("/api/books", formData, config)
+      const res = await axiosInstance.post("/api/books", formData, config);
 
       dispatch({
         type: "ADD_BOOK",
         payload: res.data,
-      })
+      });
 
-      return res.data
+      return res.data;
     } catch (err) {
       dispatch({
         type: "BOOK_ERROR",
         payload: err.response.data.msg,
-      })
-      throw err
+      });
+      throw err;
     }
-  }
+  };
 
-  // Update book (admin only)
+  // Update book
   const updateBook = async (id, formData) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
+        "x-auth-token": localStorage.getItem("token"), // if you're using JWT
       },
-    }
+    };
 
     try {
-      const res = await axios.put(`/api/books/${id}`, formData, config)
+      const res = await axiosInstance.put(`/api/books/${id}`, formData, config);
 
       dispatch({
         type: "UPDATE_BOOK",
-        payload: res.data,
-      })
+        payload: res.data, // <-- backend must return updated book
+      });
 
-      return res.data
+      return res.data;
     } catch (err) {
+      const errorMsg =
+        err.response?.data?.msg ||
+        err.response?.data ||
+        err.message ||
+        "Failed to update book";
+
+      console.error("Update book error:", errorMsg);
+
       dispatch({
         type: "BOOK_ERROR",
-        payload: err.response.data.msg,
-      })
-      throw err
+        payload: errorMsg,
+      });
+
+      throw new Error(errorMsg);
     }
-  }
+  };
 
   // Delete book (admin only)
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`/api/books/${id}`)
+      await axios.delete(`/api/books/${id}`);
 
       dispatch({
         type: "DELETE_BOOK",
         payload: id,
-      })
+      });
     } catch (err) {
       dispatch({
         type: "BOOK_ERROR",
         payload: err.response.data.msg,
-      })
+      });
     }
-  }
+  };
 
   // Clear current book
   const clearBook = () => {
-    dispatch({ type: "CLEAR_BOOK" })
-  }
+    dispatch({ type: "CLEAR_BOOK" });
+  };
 
   // Clear errors
   const clearErrors = () => {
-    dispatch({ type: "CLEAR_ERRORS" })
-  }
+    dispatch({ type: "CLEAR_ERRORS" });
+  };
 
   return (
     <BookContext.Provider
@@ -179,7 +197,7 @@ export const BookProvider = ({ children }) => {
     >
       {children}
     </BookContext.Provider>
-  )
-}
+  );
+};
 
-export default BookContext
+export default BookContext;

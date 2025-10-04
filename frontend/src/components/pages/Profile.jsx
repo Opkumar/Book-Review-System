@@ -176,7 +176,7 @@ const Profile = () => {
                     {userReviews.length > 0 ? (
                       <div className="review-list">
                         {userReviews.map((review) => (
-                          <ReviewCard key={review._id} review={review} showBook={true} />
+                          <ReviewCard key={review?._id} review={review} showBook={true} />
                         ))}
                       </div>
                     ) : (
@@ -199,8 +199,8 @@ const Profile = () => {
                     <h2 className="h4 mb-4">Reading List</h2>
                     {profileUser.readingList?.length > 0 ? (
                       <div className="row">
-                        {profileUser.readingList.map((book) => (
-                          <div key={book._id} className="col-md-4 col-sm-6 mb-4">
+                        {profileUser.readingList.map((book,index) => (
+                          <div key={index} className="col-md-4 col-sm-6 mb-4">
                             <BookCard book={book} />
                           </div>
                         ))}
@@ -226,7 +226,7 @@ const Profile = () => {
                     {profileUser.booksRead > 0 && profileUser.readBooks?.length > 0 ? (
                       <div className="row">
                         {profileUser.readBooks.map((book) => (
-                          <div key={book._id} className="col-md-4 col-sm-6 mb-4">
+                          <div key={book?._id} className="col-md-4 col-sm-6 mb-4">
                             <BookCard book={book} />
                           </div>
                         ))}

@@ -89,7 +89,7 @@ export const ReviewProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.put(`/api/reviews/${id}`, formData, config)
+      const res = await axiosInstance.put(`/api/reviews/${id}`, formData, config)
 
       dispatch({
         type: "UPDATE_REVIEW",
@@ -109,7 +109,7 @@ export const ReviewProvider = ({ children }) => {
   // Delete a review
   const deleteReview = async (id) => {
     try {
-      await axios.delete(`/api/reviews/${id}`)
+      await axiosInstance.delete(`/api/reviews/${id}`)
 
       dispatch({
         type: "DELETE_REVIEW",

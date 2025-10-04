@@ -19,6 +19,11 @@ import NotFound from "./components/pages/NotFound";
 import "./App.css";
 import { ReadingListProvider } from "./context/ReadingListContext";
 
+import EditBookPage from "./components/pages/EditBookPage";
+import Terms from "./components/pages/Terms";
+import Privacy from "./components/pages/Privacy";
+import Contact from "./components/pages/Contact";
+
 function App() {
   return (
     <AuthProvider>
@@ -43,6 +48,14 @@ function App() {
                   }
                 />
                 <Route
+                  path="/books/edit/:id"
+                  element={
+                    <PrivateRoute>
+                      <EditBookPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
                   path="/admin"
                   element={
                     <AdminRoute>
@@ -50,6 +63,9 @@ function App() {
                     </AdminRoute>
                   }
                 />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
