@@ -20,33 +20,36 @@ const Books = () => {
   })
 
   useEffect(() => {
-    getBooks(searchParams.page, 12, searchParams.search, searchParams.genre, searchParams.sort)
+    getBooks(
+      searchParams.page,
+      12,
+      searchParams.search,
+      searchParams.genre,
+      searchParams.sort
+    )
     // eslint-disable-next-line
   }, [searchParams])
 
-  const handleSearch = (search) => {
-    setSearchParams({ ...searchParams, search, page: 1 })
-  }
-
-  const handleFilterChange = (genre) => {
-    setSearchParams({ ...searchParams, genre, page: 1 })
-  }
-
-  const handleSortChange = (sort) => {
-    setSearchParams({ ...searchParams, sort, page: 1 })
-  }
-
+  const handleSearch = (search) => setSearchParams({ ...searchParams, search, page: 1 })
+  const handleFilterChange = (genre) => setSearchParams({ ...searchParams, genre, page: 1 })
+  const handleSortChange = (sort) => setSearchParams({ ...searchParams, sort, page: 1 })
   const handlePageChange = (page) => {
     setSearchParams({ ...searchParams, page })
     window.scrollTo(0, 0)
   }
 
-  if (loading) {
-    return <Spinner />
+  if (loading) return <Spinner />
+
+  // Dynamic card style for dark/light mode
+  const cardStyle = {
+    backgroundColor: "var(--card-bg)",
+    color: "var(--text-color)",
+    boxShadow: "0 10px 20px var(--card-shadow)",
+    transition: "background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
   }
 
   return (
-    <div className="books-page">
+    <div className="books-page" style={{ color: "var(--text-color)" }}>
       <div className="row">
         {/* Sidebar with filters */}
         <div className="col-md-3 mb-4">
@@ -61,12 +64,19 @@ const Books = () => {
           </div>
 
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <p className="text-muted mb-0">{books.length > 0 ? `Showing ${books.length} books` : "No books found"}</p>
+            <p className="mb-0" style={{ color: "var(--text-color)" }}>
+              {books.length > 0 ? `Showing ${books.length} books` : "No books found"}
+            </p>
             <div className="sort-dropdown">
               <select
                 className="form-select"
                 value={searchParams.sort}
                 onChange={(e) => handleSortChange(e.target.value)}
+                style={{
+                  backgroundColor: "var(--card-bg)",
+                  color: "var(--text-color)",
+                  borderColor: "var(--card-shadow)",
+                }}
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -82,15 +92,17 @@ const Books = () => {
             <div className="row">
               {books.map((book) => (
                 <div key={book._id} className="col-sm-6 col-lg-4 mb-4">
-                  <BookCard book={book} />
+                  <BookCard book={book} cardStyle={cardStyle} />
                 </div>
               ))}
             </div>
           ) : (
             <div className="text-center py-5">
-              <i className="fas fa-search fa-3x text-muted mb-3"></i>
+              <i className="fas fa-search fa-3x mb-3" style={{ color: "var(--text-color)" }}></i>
               <h3>No books found</h3>
-              <p className="text-muted">Try adjusting your search or filter to find what you're looking for.</p>
+              <p style={{ color: "var(--text-color)" }}>
+                Try adjusting your search or filter to find what you're looking for.
+              </p>
             </div>
           )}
 

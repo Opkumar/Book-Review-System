@@ -1,33 +1,53 @@
-"use client"
+"use client";
 
-import { useContext, useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
-import BookContext from "../../context/BookContext"
-import ReviewContext from "../../context/ReviewContext"
-import AuthContext from "../../context/AuthContext"
-import ReviewForm from "../reviews/ReviewForm"
-import ReviewList from "../reviews/ReviewList"
-import BookCard from "../books/BookCard"
-import Spinner from "../layout/Spinner"
-import Alert from "../layout/Alert"
+import { useContext, useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import BookContext from "../../context/BookContext";
+import ReviewContext from "../../context/ReviewContext";
+import AuthContext from "../../context/AuthContext";
+import ReviewForm from "../reviews/ReviewForm";
+import ReviewList from "../reviews/ReviewList";
+import BookCard from "../books/BookCard";
+import Spinner from "../layout/Spinner";
+import Alert from "../layout/Alert";
+import { useReadingList } from "../../context/ReadingListContext";
 
 const BookDetails = () => {
   const { id } = useParams()
   const bookContext = useContext(BookContext)
   const reviewContext = useContext(ReviewContext)
   const authContext = useContext(AuthContext)
+  const { addReadingListEntry } = useReadingList();
 
   const { book, loading: bookLoading, error: bookError, getBook } = bookContext
   const { reviews, loading: reviewLoading, getBookReviews } = reviewContext
   const { isAuthenticated, user } = authContext
 
   const [activeTab, setActiveTab] = useState("description")
+  const [adding, setAdding] = useState(false)
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => {
     getBook(id)
     getBookReviews(id)
     // eslint-disable-next-line
   }, [id])
+
+  const handleAddToReadingList = async () => {
+    if (!isAuthenticated) {
+      setAlert({ type: "danger", message: "You must be logged in to add to reading list." })
+      return
+    }
+    try {
+      setAdding(true)
+      await addReadingListEntry(user._id, book._id)
+      setAlert({ type: "success", message: "Book added to your reading list!" })
+    } catch (err) {
+      setAlert({ type: "danger", message: err.error || "Failed to add book." })
+    } finally {
+      setAdding(false)
+    }
+  }
 
   if (bookLoading || reviewLoading) {
     return <Spinner />
@@ -58,24 +78,41 @@ const BookDetails = () => {
               <div className="d-flex align-items-center justify-content-between mb-3">
                 <div className="d-flex align-items-center">
                   <i className="fas fa-star text-warning me-1"></i>
-                  <span className="fw-bold">{book.averageRating.toFixed(1)}</span>
-                  <span className="text-muted ms-1">({book.reviewCount} reviews)</span>
+                  <span className="fw-bold">
+                    {book.averageRating.toFixed(1)}
+                  </span>
+                  <span className="text-muted ms-1">
+                    ({book.reviewCount} reviews)
+                  </span>
                 </div>
                 <div className="d-flex align-items-center text-muted">
                   <i className="fas fa-book me-1"></i>
                   <span>{book.pageCount} pages</span>
                 </div>
               </div>
-              <button className="btn btn-primary w-100 mb-2">Add to Reading List</button>
+              <button
+                className="btn btn-primary w-100 mb-2"
+                onClick={handleAddToReadingList}
+                disabled={adding}
+              >
+                {adding ? "Adding..." : "Add to Reading List"}
+              </button>
               {isAuthenticated ? (
                 <button
                   className="btn btn-outline-primary w-100"
-                  onClick={() => document.getElementById("write-review").scrollIntoView({ behavior: "smooth" })}
+                  onClick={() =>
+                    document
+                      .getElementById("write-review")
+                      .scrollIntoView({ behavior: "smooth" })
+                  }
                 >
                   Write a Review
                 </button>
               ) : (
-                <Link to={`/login?redirect=/books/${book._id}`} className="btn btn-outline-primary w-100">
+                <Link
+                  to={`/login?redirect=/books/${book._id}`}
+                  className="btn btn-outline-primary w-100"
+                >
                   Sign in to Review
                 </Link>
               )}
@@ -92,7 +129,9 @@ const BookDetails = () => {
             <div className="book-meta d-flex flex-wrap gap-3 mb-4">
               <div className="d-flex align-items-center">
                 <i className="fas fa-calendar me-1"></i>
-                <span>Published: {new Date(book.publishedDate).toLocaleDateString()}</span>
+                <span>
+                  Published: {new Date(book.publishedDate).toLocaleDateString()}
+                </span>
               </div>
               <div className="d-flex align-items-center">
                 <i className="fas fa-bookmark me-1"></i>
@@ -107,7 +146,9 @@ const BookDetails = () => {
             <ul className="nav nav-tabs mb-3">
               <li className="nav-item">
                 <button
-                  className={`nav-link ${activeTab === "description" ? "active" : ""}`}
+                  className={`nav-link ${
+                    activeTab === "description" ? "active" : ""
+                  }`}
                   onClick={() => setActiveTab("description")}
                 >
                   Description
@@ -115,7 +156,9 @@ const BookDetails = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link ${activeTab === "details" ? "active" : ""}`}
+                  className={`nav-link ${
+                    activeTab === "details" ? "active" : ""
+                  }`}
                   onClick={() => setActiveTab("details")}
                 >
                   Details
@@ -124,10 +167,18 @@ const BookDetails = () => {
             </ul>
 
             <div className="tab-content">
-              <div className={`tab-pane fade ${activeTab === "description" ? "show active" : ""}`}>
+              <div
+                className={`tab-pane fade ${
+                  activeTab === "description" ? "show active" : ""
+                }`}
+              >
                 <p>{book.description}</p>
               </div>
-              <div className={`tab-pane fade ${activeTab === "details" ? "show active" : ""}`}>
+              <div
+                className={`tab-pane fade ${
+                  activeTab === "details" ? "show active" : ""
+                }`}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <p>
@@ -180,7 +231,7 @@ const BookDetails = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BookDetails
+export default BookDetails;

@@ -17,12 +17,14 @@ import AdminRoute from "./components/routing/AdminRoute";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import NotFound from "./components/pages/NotFound";
 import "./App.css";
+import { ReadingListProvider } from "./context/ReadingListContext";
 
 function App() {
   return (
     <AuthProvider>
       <BookProvider>
         <ReviewProvider>
+          <ReadingListProvider>
           <div className="app-container">
             <Navbar />
             <main className="container py-4">
@@ -53,6 +55,7 @@ function App() {
             </main>
             <Footer />
           </div>
+          </ReadingListProvider>
         </ReviewProvider>
       </BookProvider>
     </AuthProvider>

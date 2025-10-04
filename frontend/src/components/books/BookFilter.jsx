@@ -16,8 +16,22 @@ const genres = [
 ]
 
 const BookFilter = ({ selectedGenre, onFilterChange }) => {
+  const cardStyle = {
+    backgroundColor: "var(--card-bg)",
+    color: "var(--text-color)",
+    transition: "background-color 0.3s ease, color 0.3s ease",
+  }
+
+  const buttonStyle = (isActive) => ({
+    backgroundColor: isActive ? "var(--primary-color)" : "var(--card-bg)",
+    color: isActive ? "#fff" : "var(--text-color)",
+    border: "1px solid var(--card-shadow)",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+  })
+
   return (
-    <div className="card">
+    <div className="card" style={cardStyle}>
       <div className="card-header">
         <h5 className="mb-0">Filters</h5>
       </div>
@@ -29,7 +43,8 @@ const BookFilter = ({ selectedGenre, onFilterChange }) => {
               <button
                 key={genre.value}
                 type="button"
-                className={`list-group-item list-group-item-action ${selectedGenre === genre.value ? "active" : ""}`}
+                className="list-group-item list-group-item-action"
+                style={buttonStyle(selectedGenre === genre.value)}
                 onClick={() => onFilterChange(genre.value)}
               >
                 {genre.label}

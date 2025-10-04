@@ -1,32 +1,172 @@
-/* Global Styles */
+/* ================================
+   Global CSS Variables & Colors
+================================ */
 :root {
   --primary-color: #007bff;
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
+
+  /* Light mode defaults */
+  --bg-color: var(--light-color);
+  --text-color: #212529;
+  --card-bg: #fff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Add to your global CSS */
+
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 4px 10px var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+
+.nav-link,
+.nav-tabs .nav-link {
+  color: var(--text-color);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.btn-outline-primary {
+  color: var(--text-color);
+  border-color: var(--primary-color);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+}
+
+/* Dark mode overrides */
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+  --card-bg: #1f1f1f;
+  --card-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* ================================
+   Body & App Container
+================================ */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 main {
   flex: 1;
 }
 
-/* Book Card Styles */
-.book-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* ================================
+   Navbar & Footer
+================================ */
+.navbar,
+footer {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar .nav-link,
+footer a {
+  color: var(--text-color) !important;
+}
+
+.navbar .nav-link:hover,
+footer a:hover {
+  color: var(--primary-color) !important;
+}
+/* Footer */
+footer.footer {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+footer.footer .footer-link {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer.footer .footer-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+
+/* Dropdown menu */
+.dropdown-menu {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.dropdown-menu .dropdown-item {
+  color: var(--text-color) !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+/* Navbar brand */
+.navbar .navbar-brand,
+.navbar .navbar-brand i {
+  color: var(--text-color) !important;
+}
+
+/* ================================
+   Buttons
+================================ */
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* ================================
+   Cards (Books & Reviews)
+================================ */
+.book-card,
+.review-list .card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 10px 20px var(--card-shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .book-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* ================================
+   Book Cover & Featured Badge
+================================ */
 .book-cover {
   position: relative;
 }
@@ -37,23 +177,32 @@ main {
   right: 10px;
 }
 
-/* Star Rating Styles */
+/* ================================
+   Star Rating
+================================ */
 .star-rating {
   display: flex;
   align-items: center;
 }
 
-/* Review Card Styles */
-.review-list .card {
-  margin-bottom: 1.5rem;
-}
-
-/* Profile Page Styles */
+/* ================================
+   Profile Page Tabs
+================================ */
 .profile-page .nav-tabs .nav-link {
   cursor: pointer;
 }
 
-/* Responsive Adjustments */
+/* Dark Mode Toggle inside dropdown */
+.dropdown-item.d-flex:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 0.25rem;
+}
+
+
+/* ================================
+   Responsive Adjustments
+================================ */
 @media (max-width: 768px) {
   .container {
     padding-left: 15px;

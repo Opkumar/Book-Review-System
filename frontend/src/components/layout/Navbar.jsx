@@ -1,22 +1,22 @@
-import { useContext } from "react"
-import { Link } from "react-router-dom"
-import AuthContext from "../../context/AuthContext"
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
+import DarkModeToggle from "./DarkModeToggle";
 
 const Navbar = () => {
-  const authContext = useContext(AuthContext)
-  const { isAuthenticated, user, logout } = authContext
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
 
-  const onLogout = () => {
-    logout()
-  }
+  const onLogout = () => logout();
 
   const authLinks = (
-    <ul className="navbar-nav ms-auto">
+    <ul className="navbar-nav ms-auto align-items-center">
       {user && user.role === "admin" && (
         <li className="nav-item">
           <Link className="nav-link" to="/admin">
-            <i className="fas fa-cog me-1"></i>
-            Admin
+            <i className="fas fa-cog me-1"></i> Admin
           </Link>
         </li>
       )}
@@ -29,32 +29,38 @@ const Navbar = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <i className="fas fa-user me-1"></i>
-          {user && user.name}
+          <i className="fas fa-user me-1"></i> {user && user.name}
         </a>
-        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+        <ul
+          className="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdown"
+        >
           <li>
             <Link className="dropdown-item" to={`/profile/${user && user._id}`}>
-              <i className="fas fa-user-circle me-1"></i>
-              Profile
+              <i className="fas fa-user-circle me-1"></i> Profile
             </Link>
           </li>
           <li>
             <hr className="dropdown-divider" />
           </li>
           <li>
+            <DarkModeToggle className="dropdown-item" />
+          </li>
+          <li>
+            <hr className="dropdown-divider" />
+          </li>
+          <li>
             <a className="dropdown-item" href="#!" onClick={onLogout}>
-              <i className="fas fa-sign-out-alt me-1"></i>
-              Logout
+              <i className="fas fa-sign-out-alt me-1"></i> Logout
             </a>
           </li>
         </ul>
       </li>
     </ul>
-  )
+  );
 
   const guestLinks = (
-    <ul className="navbar-nav ms-auto">
+    <ul className="navbar-nav ms-auto align-items-center">
       <li className="nav-item">
         <Link className="nav-link" to="/register">
           Register
@@ -65,15 +71,17 @@ const Navbar = () => {
           Login
         </Link>
       </li>
+      <li className="nav-item ms-3">
+        <DarkModeToggle />
+      </li>
     </ul>
-  )
+  );
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <nav className="navbar navbar-expand-lg mb-4">
       <div className="container">
         <Link className="navbar-brand" to="/">
-          <i className="fas fa-book me-2"></i>
-          BookReviews
+          <i className="fas fa-book me-2"></i> BookReviews
         </Link>
         <button
           className="navbar-toggler"
@@ -84,8 +92,12 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <i
+            className="fas fa-bars"
+            style={{ color: darkMode ? "#fff" : "#000", fontSize: "1.25rem" }}
+          ></i>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
@@ -103,7 +115,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

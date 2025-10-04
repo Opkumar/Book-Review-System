@@ -19,10 +19,26 @@ const Home = () => {
     return <Spinner />
   }
 
+  // Inline styles based on CSS variables for dynamic dark/light mode
+  const sectionStyle = {
+    backgroundColor: "var(--card-bg)",
+    color: "var(--text-color)",
+    padding: "3rem 0",
+    borderRadius: "0.5rem",
+  }
+
+  const cardStyle = {
+    backgroundColor: "var(--card-bg)",
+    color: "var(--text-color)",
+    boxShadow: "0 10px 20px var(--card-shadow)",
+    transition: "background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
+  }
+
   return (
-    <div className="home-page">
+    <div className="home-page" style={{ color: "var(--text-color)" }}>
+    
       {/* Hero Section */}
-      <section className="hero-section text-center py-5 mb-5 bg-light rounded">
+      <section className="hero-section text-center mb-5" style={sectionStyle}>
         <div className="container">
           <h1 className="display-4 mb-4">Discover Your Next Favorite Book</h1>
           <p className="lead mb-4">
@@ -51,7 +67,7 @@ const Home = () => {
             {featuredBooks.length > 0 ? (
               featuredBooks.map((book) => (
                 <div key={book._id} className="col-md-6 col-lg-3 mb-4">
-                  <BookCard book={book} />
+                  <BookCard book={book} cardStyle={cardStyle} />
                 </div>
               ))
             ) : (
@@ -70,7 +86,7 @@ const Home = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="how-it-works py-5 bg-light rounded">
+      <section className="how-it-works py-5" style={sectionStyle}>
         <div className="container">
           <div className="text-center mb-5">
             <h2 className="section-title">How It Works</h2>
@@ -78,36 +94,23 @@ const Home = () => {
           </div>
 
           <div className="row">
-            <div className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body text-center">
-                  <h3 className="card-title h5">Discover</h3>
-                  <p className="card-text">
-                    Browse our extensive collection of books across all genres and find your next great read.
-                  </p>
+            {["Discover", "Review", "Connect"].map((title, idx) => (
+              <div key={idx} className="col-md-4 mb-4">
+                <div className="card h-100" style={cardStyle}>
+                  <div className="card-body text-center">
+                    <h3 className="card-title h5">{title}</h3>
+                    <p className="card-text">
+                      {title === "Discover" &&
+                        "Browse our extensive collection of books across all genres and find your next great read."}
+                      {title === "Review" &&
+                        "Share your thoughts and opinions on books you've read to help other readers."}
+                      {title === "Connect" &&
+                        "Join a community of book lovers and discover new perspectives and recommendations."}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body text-center">
-                  <h3 className="card-title h5">Review</h3>
-                  <p className="card-text">
-                    Share your thoughts and opinions on books you've read to help other readers.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body text-center">
-                  <h3 className="card-title h5">Connect</h3>
-                  <p className="card-text">
-                    Join a community of book lovers and discover new perspectives and recommendations.
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
