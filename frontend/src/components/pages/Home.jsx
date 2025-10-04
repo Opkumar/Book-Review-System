@@ -1,22 +1,24 @@
-"use client"
+"use client";
 
-import { useContext, useEffect } from "react"
-import { Link } from "react-router-dom"
-import BookContext from "../../context/BookContext"
-import BookCard from "../books/BookCard"
-import Spinner from "../layout/Spinner"
+import { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import BookContext from "../../context/BookContext";
+import authContext from "../../context/AuthContext";
+import BookCard from "../books/BookCard";
+import Spinner from "../layout/Spinner";
 
 const Home = () => {
-  const bookContext = useContext(BookContext)
-  const { featuredBooks, loading, getFeaturedBooks } = bookContext
+  const bookContext = useContext(BookContext);
+  const { featuredBooks, loading, getFeaturedBooks } = bookContext;
+  const { user } = authContext;
 
   useEffect(() => {
-    getFeaturedBooks()
+    getFeaturedBooks();
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   if (loading) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   // Inline styles based on CSS variables for dynamic dark/light mode
@@ -25,32 +27,35 @@ const Home = () => {
     color: "var(--text-color)",
     padding: "3rem 0",
     borderRadius: "0.5rem",
-  }
+  };
 
   const cardStyle = {
     backgroundColor: "var(--card-bg)",
     color: "var(--text-color)",
     boxShadow: "0 10px 20px var(--card-shadow)",
-    transition: "background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
-  }
+    transition:
+      "background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
+  };
 
   return (
     <div className="home-page" style={{ color: "var(--text-color)" }}>
-    
       {/* Hero Section */}
       <section className="hero-section text-center mb-5" style={sectionStyle}>
         <div className="container">
           <h1 className="display-4 mb-4">Discover Your Next Favorite Book</h1>
           <p className="lead mb-4">
-            Join our community of book lovers. Read reviews, share your thoughts, and find your next great read.
+            Join our community of book lovers. Read reviews, share your
+            thoughts, and find your next great read.
           </p>
           <div className="d-flex justify-content-center gap-3">
             <Link to="/books" className="btn btn-primary btn-lg">
               Browse Books
             </Link>
-            <Link to="/register" className="btn btn-outline-primary btn-lg">
-              Sign Up
-            </Link>
+            {!user && (
+              <Link to="/register" className="btn btn-outline-primary btn-lg">
+                Sign Up
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -60,7 +65,9 @@ const Home = () => {
         <div className="container">
           <div className="text-center mb-4">
             <h2 className="section-title">Featured Books</h2>
-            <p className="section-description">Explore our handpicked selection of must-read books this month.</p>
+            <p className="section-description">
+              Explore our handpicked selection of must-read books this month.
+            </p>
           </div>
 
           <div className="row">
@@ -90,7 +97,9 @@ const Home = () => {
         <div className="container">
           <div className="text-center mb-5">
             <h2 className="section-title">How It Works</h2>
-            <p className="section-description">Join thousands of readers in our community.</p>
+            <p className="section-description">
+              Join thousands of readers in our community.
+            </p>
           </div>
 
           <div className="row">
@@ -115,7 +124,7 @@ const Home = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
