@@ -1,53 +1,53 @@
-"use client"
+"use client";
 
-import { useState, useContext, useEffect } from "react"
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import AuthContext from "../../context/AuthContext"
-import Alert from "../layout/Alert"
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
+import Alert from "../layout/Alert";
 
 const Login = () => {
-  const authContext = useContext(AuthContext)
-  const { login, error, clearErrors, isAuthenticated } = authContext
+  const authContext = useContext(AuthContext);
+  const { login, error, clearErrors, isAuthenticated } = authContext;
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
 
-  const { email, password } = formData
-  const [loading, setLoading] = useState(false)
+  const { email, password } = formData;
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Get redirect path from URL query params
-  const searchParams = new URLSearchParams(location.search)
-  const redirectTo = searchParams.get("redirect") || "/"
+  const searchParams = new URLSearchParams(location.search);
+  const redirectTo = searchParams.get("redirect") || "/";
 
   useEffect(() => {
     // If already authenticated, redirect
     if (isAuthenticated) {
-      navigate(redirectTo)
+      navigate(redirectTo);
     }
     // eslint-disable-next-line
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-    if (error) clearErrors()
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (error) clearErrors();
+  };
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     await login({
       email,
       password,
-    })
+    });
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="row justify-content-center">
@@ -68,6 +68,7 @@ const Login = () => {
                   className="form-control"
                   id="email"
                   name="email"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={onChange}
                   required
@@ -83,6 +84,7 @@ const Login = () => {
                   className="form-control"
                   id="password"
                   name="password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={onChange}
                   required
@@ -90,7 +92,11 @@ const Login = () => {
                 />
               </div>
 
-              <button type="submit" className="btn btn-primary w-100 mb-3" disabled={loading}>
+              <button
+                type="submit"
+                className="btn btn-primary w-100 mb-3"
+                disabled={loading}
+              >
                 {loading ? "Signing In..." : "Sign In"}
               </button>
 
@@ -105,7 +111,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
